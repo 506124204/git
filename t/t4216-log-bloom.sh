@@ -6,6 +6,12 @@ test_description='git log for a path with Bloom filters'
 GIT_TEST_COMMIT_GRAPH=0
 GIT_TEST_COMMIT_GRAPH_CHANGED_PATHS=0
 
+OID_VERSION=1
+if [ "$GIT_DEFAULT_HASH" = "sha256" ]
+then
+	OID_VERSION=2
+fi
+
 test_expect_success 'setup test - repo, commits, commit graph, log outputs' '
 	git init &&
 	mkdir A A/B A/B/C &&
@@ -35,7 +41,7 @@ test_expect_success 'setup test - repo, commits, commit graph, log outputs' '
 graph_read_expect () {
 	NUM_CHUNKS=5
 	cat >expect <<- EOF
-	header: 43475048 1 1 $NUM_CHUNKS 0
+	header: 43475048 1 $OID_VERSION $NUM_CHUNKS 0
 	num_commits: $1
 	chunks: oid_fanout oid_lookup commit_metadata bloom_indexes bloom_data
 	EOF

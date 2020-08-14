@@ -6,6 +6,12 @@ test_description='split commit graph'
 GIT_TEST_COMMIT_GRAPH=0
 GIT_TEST_COMMIT_GRAPH_CHANGED_PATHS=0
 
+OID_VERSION=1
+if [ "$GIT_DEFAULT_HASH" = "sha256" ]
+then
+	OID_VERSION=2
+fi
+
 test_expect_success 'setup repo' '
 	git init &&
 	git config core.commitGraph true &&
@@ -28,7 +34,7 @@ graph_read_expect() {
 		NUM_BASE=$2
 	fi
 	cat >expect <<- EOF
-	header: 43475048 1 1 3 $NUM_BASE
+	header: 43475048 1 $OID_VERSION 3 $NUM_BASE
 	num_commits: $1
 	chunks: oid_fanout oid_lookup commit_metadata
 	EOF
