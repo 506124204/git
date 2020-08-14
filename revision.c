@@ -2439,7 +2439,7 @@ static int handle_revision_opt(struct rev_info *revs, int argc, const char **arg
 	} else if (!strcmp(arg, "--always")) {
 		revs->always_show_header = 1;
 	} else if (!strcmp(arg, "--no-abbrev")) {
-		revs->abbrev = 0;
+		revs->abbrev = hexsz;
 	} else if (!strcmp(arg, "--abbrev")) {
 		revs->abbrev = DEFAULT_ABBREV;
 	} else if (skip_prefix(arg, "--abbrev=", &optarg)) {
